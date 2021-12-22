@@ -84,7 +84,7 @@ def pack(data, time_icoord, offset_icoord, name):
     icoords = InterpolatedCoordinates({
         "time": time_icoord,
         "offset": offset_icoord})
-    icoords["time"].simplify(np.timedelta64(1, "us"))
+    icoords["time"].simplify(np.timedelta64(0, "us"))
     data_array = xr.DataArray(data, dims=dims, name=name)
     ixarr = InterpolatedDataArray(data_array, icoords)
     return ixarr
