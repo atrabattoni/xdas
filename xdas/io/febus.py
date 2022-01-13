@@ -11,10 +11,10 @@ def read(fname, decimation=None):
     """Read a febus A1-R file into a InterpolatedDataArray"""
     data, time, delta, name = read_hdf5(fname)
     data, time = trim_overlaps(data, time, delta)
-    time_icoord = get_time_icoord(data, time, delta)
-    offset_icoord = get_offset_icoord(data, delta)
     if decimation is not None:
         data, delta = decimate(data, delta, decimation)
+    time_icoord = get_time_icoord(data, time, delta)
+    offset_icoord = get_offset_icoord(data, delta)
     data = da.reshape(data, (-1, data.shape[2]))
     ixarr = pack(data, time_icoord, offset_icoord, name)
     return ixarr
