@@ -9,7 +9,7 @@ First install the dependencies:
 
     conda install dask h5py netcdf4 numpy scipy xarray
 
-Then install ```icoords``` wich is a pluging for xarray:
+Then install ```icoords``` which is a pluging for xarray:
 
     git clone https://github.com/atrabattoni/icoords.git
     (cd icoords && pip install -e .)
