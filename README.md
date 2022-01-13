@@ -7,7 +7,7 @@ xdas is a python library built around xarray that allows to work with DAS data
 
 First install the dependencies:
 
-    conda install dask h5py icoords netcdf4 numpy scipy xarray
+    conda install dask h5py netcdf4 numpy scipy xarray
 
 Then install ```icoords``` wich is a pluging for xarray:
 
