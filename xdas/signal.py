@@ -5,8 +5,7 @@ from scipy import ndimage
 
 def convolve(xarr, weights, dim):
     axis = xarr.get_axis_num(dim)
-    depth = [0] * xarr.ndim
-    depth[axis] = len(weights)//2 + 1
+    depth = {axis: len(weights)//2 + 1}
 
     def func(x):
         return ndimage.convolve1d(x, weights, axis=axis, mode="constant")
