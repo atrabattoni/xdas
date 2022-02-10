@@ -12,9 +12,9 @@ def read(fname, decimation=None, preprocess=None):
     data, time, delta, name = read_hdf5(fname)
     if preprocess is not None:
         data, time, delta, name = preprocess(data, time, delta, name)
-    data, time = trim_overlaps(data, time, delta)
     if decimation is not None:
         data, delta = decimate(data, delta, decimation)
+    data, time = trim_overlaps(data, time, delta)
     time_icoord = get_time_icoord(data, time, delta)
     offset_icoord = get_offset_icoord(data, delta)
     data = da.reshape(data, (-1, data.shape[2]))
