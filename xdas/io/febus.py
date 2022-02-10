@@ -7,9 +7,11 @@ from icoords.core import InterpolatedCoordinates, InterpolatedDataArray
 from icoords.interpolate import LinearCoordinate
 
 
-def read(fname, decimation=None):
+def read(fname, decimation=None, preprocess=None):
     """Read a febus A1-R file into a InterpolatedDataArray"""
     data, time, delta, name = read_hdf5(fname)
+    if preprocess is not None:
+        data, time, delta, name = preprocess(data, time, delta, name)
     data, time = trim_overlaps(data, time, delta)
     if decimation is not None:
         data, delta = decimate(data, delta, decimation)
@@ -91,8 +93,8 @@ def pack(data, time_icoord, offset_icoord, name):
 
 
 def to_snakecase(name):
-    name = "".join(["_"+c.lower() if c.isupper()
-                   else c for c in name]).lstrip("_")
+    name = "".join(["_" + c.lower() if c.isupper()
+                    else c for c in name]).lstrip("_")
     return name
 
 
@@ -106,3 +108,11 @@ def to_linear_coordinate(starts, sizes, steps):
     tie_indices = np.stack((start_indices, end_indices)).T.reshape(-1)
     time_coordinate = LinearCoordinate(tie_indices, tie_values)
     return time_coordinate
+
+
+def correct_gps_time(data, time, delta, name):
+    dt = data.shape[1] * delta["time"] / 2
+    n = data.shape[0]
+    t0 = time[0] + np.median(time - time[0] - dt * np.arange(n))
+    time = t0 + dt * np.arange(n)
+    return data, time, delta, name
